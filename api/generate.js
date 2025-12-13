@@ -1,21 +1,31 @@
 export default async function handler(req, res) {
   const origin = req.headers.origin || "";
+
+  // 🔴 1. CORS 헤더를 무조건 먼저 세팅
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   const allowed = (process.env.ALLOWED_ORIGINS || "")
     .split(",")
-    .map(v => v.trim())
-    .filter(Boolean);
+    .map(v => v.trim());
 
-  if (allowed.length && allowed.includes(origin)) {
+  if (allowed.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Vary", "Origin");
   }
 
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  // 🔴 2. 그 다음 OPTIONS 처리
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
 
-  if (req.method === "OPTIONS") return res.status(204).end();
-  if (req.method !== "POST")
+  // 🔴 3. POST만 허용
+  if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
+  }
+
+  /* ===== 여기부터 기존 POST 로직 그대로 ===== */
+
 
   const { title, apiKey } = req.body || {};
 

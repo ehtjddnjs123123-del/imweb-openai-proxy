@@ -1,30 +1,10 @@
 export default async function handler(req, res) {
-  const origin = req.headers.origin || "";
-
-  // 1️⃣ CORS 헤더를 무조건 먼저 세팅
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
-  const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
-    .split(",")
-    .map(v => v.trim())
-    .filter(Boolean);
-
-  // 2️⃣ 허용된 origin이면 반드시 헤더 설정
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-
-  // ⭐ 핵심: OPTIONS 요청은 여기서 바로 종료
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  // POST만 허용
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
+
+  // 나머지 OpenAI 로직 그대로
+}
 
   /* ===== 여기부터 기존 POST 로직 그대로 ===== */
 

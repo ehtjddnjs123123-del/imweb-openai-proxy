@@ -75,7 +75,7 @@ export default async function handler(req, res) {
   <p class="wp-text">...</p><p class="wp-text">...</p><p class="wp-text">...</p><p class="wp-text">...</p>
 
   <div class="wp-cta-list">
-    <a class="wp-cta-btn" href="https://www.naver.com" target="_blank" rel="noopener">...</a>
+    <a class="wp-cta-btn" href="https://www.naver.com">...</a>
     (총 7개)
   </div>
 
